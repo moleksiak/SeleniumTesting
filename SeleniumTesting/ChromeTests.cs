@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using Xunit;
 
@@ -130,6 +131,35 @@ namespace SeleniumTesting
                 var continentsDropdownElement = driver.FindElement(By.Id("continents"));
                 var continentsSelect = new SelectElement(continentsDropdownElement);
                 continentsSelect.SelectByText("Europe");
+            }
+        }
+
+        [Fact]
+        public void DragAndDropTest()
+        {
+            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            {
+                driver.Navigate().GoToUrl(@"https://demoqa.com/dialog/");
+
+                var elementToDrag = driver.FindElement(By.XPath("//div[@role='dialog']/child::div[contains(@class, 'ui-draggable-handle')]"));
+
+                var action = new Actions(driver);
+                action.DragAndDropToOffset(elementToDrag, 150, 150).Perform();
+            }
+        }
+
+        [Fact]
+        public void ResizeTest()
+        {
+            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            {
+                driver.Navigate().GoToUrl(@"https://demoqa.com/dialog/");
+
+                var elementToResizeHandle = driver.FindElement(By.XPath("//div[contains(@class, 'ui-resizable-se')]"));
+
+                var action = new Actions(driver);
+                action.ClickAndHold(elementToResizeHandle).MoveByOffset(150, 150).Release();
+                action.Build().Perform();
             }
         }
     }
