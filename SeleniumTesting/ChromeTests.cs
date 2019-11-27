@@ -105,6 +105,32 @@ namespace SeleniumTesting
             }
         }
 
+        [Fact]
+        public void FormFillTest()
+        {
+            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            {
+                driver.Navigate().GoToUrl(@"https://www.techlistic.com/p/selenium-practice-form.html");
 
+                var firstNameInput = driver.FindElement(By.XPath("//input[@name='firstname']"));
+                var lastNameInput = driver.FindElement(By.XPath("//input[@name='lastname']"));
+                firstNameInput.SendKeys("John");
+                lastNameInput.SendKeys("Doe");
+
+                driver.FindElement(By.Id("sex-0")).Click();
+
+                driver.FindElement(By.Id("exp-3")).Click();
+
+                driver.FindElement(By.Id("datepicker")).SendKeys("27-11-2019");
+
+                driver.FindElement(By.Id("profession-1")).Click();
+
+                driver.FindElement(By.Id("tool-2")).Click();
+
+                var continentsDropdownElement = driver.FindElement(By.Id("continents"));
+                var continentsSelect = new SelectElement(continentsDropdownElement);
+                continentsSelect.SelectByText("Europe");
+            }
+        }
     }
 }
